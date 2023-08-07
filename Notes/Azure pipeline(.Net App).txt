@@ -1,0 +1,60 @@
+-----------------------------------------------------------------------
+# Deployment of .Net application using Azure Devops pipelines
+#Nextops videos GitHub account
+https://github.com/nextopsvideos/PartsUnlimited
+
+#Prepare pre-required resources
+*Azure web app
+*Azure MySQL database
+*connection Strings  
+
+#Build pipeline tasks for Deploying java application
+
+*Click on classic editor
+*Select scm
+*Create an Empty job
+*To run build pipe line Select Azure hosted machine/self hosted machine
+
+*Add tasks Nuget (restore)  to build .Netapplication-pick up Nuget
+*Do customisations on task like give command restore, select solution file path (or else give current directory path like **\*.sln)
+
+*Add task for build the solution-search for ms build or visual studio ms build
+*
+
+
+*Add task called copy files to drop artifacts into specific location from maven build
+*Source folder-$(Build.sourcesDirectory)
+*Target folder-$(Build.ArtifactStaingDirectory)
+*In the contents **/target/*.war(getting war file)/*.sql(if database using)
+
+*Add task called Publish artifacts(Artifacts drop location,it gives output for release pipeline)
+ 
+#Release pipeline
+
+*Create new pipeline
+*Empty job
+*Mention stage name like Dev,QA,Prod
+*Add an artifact select Build, select out put artifact from build pipeline
+*Click on job,select agent machine o run release pipeline 
+
+#Add Deployment Tasks of release pipeline
+
+#Add task for database
+
+*if MySQL database using, search for Azure database for MySQL deployment
+*select subscription
+*create connection string
+*Give database host name, user name,paaswd(if required keep it in variables or in Azure key vault) and add any  scripts available in drop location select it
+  
+#Add task Azure web app deployment
+
+*Serach for Azure app service deploy in deployt tab
+*Give subscription,web app service name(already created web app service in Azure resouces), connection string, select artifact path(.war file location)
+*Create release and click deploy
+
+#To Enable Continues integration and Continues deployment 
+
+*Go to build pipelines edit the pipeline under triggers tick on check box shows Continues integration
+*Go to release pipeline above the artifact trigger icon will be there select it and enable Continues Deployment
+
+# To verify the deployment go to Azure web app, hit on browse and navigate into any specified path given in URL

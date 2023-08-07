@@ -1,0 +1,33 @@
+#Azuredevops using Terraform
+
+Pre-requisites:
+
+*Source code
+*Create project in Azuredevops
+*Go to that project and import code
+*Create Build pipeline & release pipeline
+
+ #Steps under Build pipeline
+
+*Go with classic editor
+*Select scm where it recides
+*under tasks, search for copy files,publish artifact
+
+#Configuration under Copy files & publish artifact
+
+*pick source folder from source files
+*Target folder $(Build ArtifactStagingDirectory)/foldername to where we want to copy
+*contents ** which means copy all files
+*save & queue
+
+#Steps under Release pipeline
+
+*add an artifact from build pipeline
+*under stages add tasks like as below
+*Azure cli task,Azure powershell task,replace tokens (if terraform state file required in remote need to create storage account,resource group for that, in scripting file any sytaxes should be replace, these all thing can do by these three tasks, have to add path of file or file)
+
+*terraform tool installer (if not available go to market place get it free search Azure pipelines terraform tasks)
+*terraform (add this task as per reuired times for terraform init,plan,validate & apply etc)
+
+
+

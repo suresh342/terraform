@@ -1,0 +1,21 @@
+    
+# Add this persistent volume mounts under container volume mount in Deployment.yml file
+
+
+volumeMounts:
+    - mountPath: "/mnt/ntfs"
+      name: pv-azuredisk
+  volumes:
+    - name: pv-azuredisk
+      persistentVolumeClaim:
+        claimName:  pvc-azuredisk
+
+
+
+
+Referrence: https://linuxconfig.org/how-to-mount-partition-with-ntfs-file-system-and-read-write-access
+
+
+
+
+

@@ -1,0 +1,75 @@
+#To create service principle
+*Azure active directory 
+*App registration
+*Applications
+*create new registration,certifications&secrets if required
+
+#Deploy terraform scripts through Azuredevops
+*go to dev.azure.com
+*go to project
+*go to pipelines(yaml), create new pipeline, select scm & repository
+*select starter pipeline
+*to take assistance under tasks search terraform cli& terraform installer
+*if not available go to manage extentions
+*search 'azure pipelines terraform tasks' in market place
+
+
+
+
+
+#Terraform installation
+*Download terraorm
+*set path in environmet variables
+
+#Commands (Navigate to that folder where terraform are files are located)
+
+*terraform init  (initialise the provider)
+*terraform plan   (simulate the code)
+*terraform validate (validate the code)
+*terraform apply   (initialise the deployment)
+*terraform destroy ()
+
+
+#AKS deployment using-Terraform
+github.com/labdemo223/AKS-Terraform
+
+#Azurerm kubernetes-to get resources templates
+#Azurerm <type required resource name> kubernetes
+
+#Template code link
+*https://github.com/nextopsvideos/terraformyt
+*https://github.com/nextopsvideos/terraform_ado
+*https://github.com/nextopsvideos/adoe2e
+
+# Azure Pre defined variables
+*while mentioning root directory/artifact drop location  ..etc.. we can make use of pre defined variables provided by azure
+
+#Terraform files
+
+*main.tf         (it contains resources to be provision)
+*variables.tf    (it contains variable names)
+*terrafor.tfvars (it contains variable values)
+*terraform.tfstate(it contains the resources deployed/created)
+
+#Syntax to give variables
+
+"$(var.<variablename>)"
+
+Example: mention region name
+
+"$(var.rgname)"
+
+
+#Azure resource deployment through terraform
+
+*Provider
+*Resources
+
+
+
+
+ 
+
+
+
+

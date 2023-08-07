@@ -1,0 +1,130 @@
+#referrence
+
+Code : https://github.com/mandiladitya/Azure
+Official Docs : https://docs.microsoft.com/en-us/azur
+Github : https://github.com/mandiladitya
+Github Pro Series : https://www.youtube.com/watch?v=h7P4p
+Cronjob Inside Docker : https://www.youtube.com/watch?v=J-6Dw
+
+
+#To share files among pods
+
+*Create a storage account
+*Go to file share in that 
+*Take storage account name & key
+*Create a secret for this account by following command
+kubectl create secret generic azure-secret --from-literal=azurestorageaccountname=myAKSStorageAccount --from-literal=azurestorageaccountkey=$<STORAGE_KEY>
+
+#Persistent Volume-fille share
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: azurefile
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  azureFile:
+    secretName: azure-secret
+    shareName: aksshare
+    readOnly: false
+  mountOptions:
+  - dir_mode=0777
+  - file_mode=0777
+  - uid=1000
+  - gid=1000
+  - mfsymlinks
+  - nobrl
+
+
+
+#Persistent volume Claim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: azurefile
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+
+
+
+#Create pod for pv
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+  - image: centos
+    name: mypod
+    volumeMounts:
+      - name: azure
+        mountPath: <specify mount path>
+  volumes:
+  - name: azure
+    persistentVolumeClaim:
+      claimName: azurefile
+
+
+
+#Create Pod for volume mounts
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod  #mention pod name
+spec:
+  nodeSelector:
+    kubernetes.io/os: linux
+  containers:
+    - image: 'mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine' #paste custom immage id
+      name: mypod
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+      volumeMounts:
+        - name: azure
+          mountPath: /mnt/azure
+  volumes:
+    - name: azure
+      csi: 
+        driver: file.csi.azure.com
+        readOnly: false
+        volumeAttributes:
+          secretName: azure-secret  # required
+          shareName: aksshare  # required
+          mountOptions: 'dir_mode=0777,file_mode=0777,cache=strict,actimeo=30,nosharesock'  # optional
+
+
+
+#Commands to excute
+
+kubectl apply -f <filename>
+kubectl get pods
+kubectl get all
+kubectl get pv
+kubectl get pvc
+kubectl get secret
+
+
+
+
+----------------------------------------------
+
+
+
+

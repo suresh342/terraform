@@ -1,0 +1,49 @@
+# To create Persistent Volume Claim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-azuredisk
+spec:
+  accessModes:
+  - ReadWriteOnce   # ReadWriteOnce, ReadOnlyMany or ReadWriteMany
+    resources:
+    requests:
+      storage: 5Gi
+  volumeName:pv-azuredisk
+  storageClassName: managed-csi
+
+
+
+-----------------------------------------------------
+
+# To Create Persistent Volume
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: disk.csi.azure.com
+  name: pv-azuredisk
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce  # ReadWriteOnce, ReadOnlyMany or ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: managed-csi
+  csi:
+    driver: disk.csi.azure.com
+    readOnly: false  
+    volumeHandle: # Paste Azure Disk URI   #Example: /subscriptions/<subscriptionID>/resourceGroups/MC_myAKSCluster_myAKSCluster_eastus/providers/Microsoft.Compute/disks/myAKSDisk 
+    volumeAttributes:
+      fsType: ntfs
+
+
+# Note :For Linux ext4, ext3, ext2, xfs, btrfs # For Windows ntfs
+
+
+
+Refference: 1. https://learn.microsoft.com/en-us/azure/aks/azure-csi-disk-storage-provision
+            
+            2. https://kubernetes.io/docs/concepts/storage/storage-classes/#azure-file

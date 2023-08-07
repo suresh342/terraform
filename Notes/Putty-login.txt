@@ -1,0 +1,122 @@
+#Access Virtual Machine(EC2 instance) through Putty
+
+*Go to putty.org url
+*Install putty (search for MSI windows installer)
+*Install puttygen (search for puttygen.exe)
+*Keep pem file ready
+
+
+#In Puttygen 
+
+*Open puttygen key generator
+*Go to load
+*Load propt will open, keep it as all files, and search for downloaded pem location
+*Save private key anywhere else as ppk file
+
+#In putty
+
+*open putty
+*Enter public host DNS name/Public IP of EC2 instance
+*Go to SSh select Auth/authentication
+*Browse ppk file,open
+*Command prompt will be open
+*Login as ec2-user
+* if you want install anything change user as root user by 'sudo su' command
+
+#Examples
+
+*if we want install apache webserver
+*sudo yum -y install httpd
+*To start httpd service give 'sudo service httpd start'
+
+#Install Docker
+
+*yum update -y
+*yum install docker -y
+*docker -v (check verion)
+*service docker start
+*write sample dockerfile
+*docker build -t .
+*docker run -t -d --name <container name> -p <host port>:<docker port> imagename
+*docker exec -it <con id> /bin/bash
+*docker images
+*docker rmi
+*docker ps -a or docker ps -aq
+*docker stop <con name>
+*docker rm <con name>
+*docker stop $(docker ps -aq)   to stop all running containers
+*docker rm $(docker ps -aq) to remove all containers
+*docker rmi $(docker images -q)
+*docker rm -f <con name>  to remove container forcefully
+
+
+
+*az acr login --name <acr id>
+*docker tag waycool2-o-redis <acr id>/waycool2-o-redis:v1
+*docker push <acr id >/waycool-o-redis:v1
+
+#Install jenkins container 
+
+*docker run -t -d --name myjenkins(con name) -p 8080:8080 jenkins 
+
+
+#Kubernetes
+
+*kubectl appy -f <file name>
+
+*kubectl get secret -A
+*kubectl get service -A
+*kubectl get pods -A
+*kubectl get pod -A -o wide
+*kubectl get pods -n waycool2-o
+*kubectl get pods -n ingressname
+*kubectl get deployment -A
+*kubectl get secret
+*kubectl get cm <configmap namme>
+*kubectl get configmap
+*kubectl create namespace <mention namespace>
+
+*kubectl logs <ingress id> -n ingress name
+*kubectl describe service -n ingressname
+*kubectl describe pod <podname> -n namespace
+*kubectl exec -it <podname> -n <namespace> /bin/bash or /bin/sh
+
+*kubectl delete -f <filename> -n ingressname
+*kubectl delete -f <filename>
+*kubectl delete pod <podname> -n ingressname
+
+*kubectl port-forward pods/podname 1024:679 -n ingressname
+*kubectl port-forward service/backend 1024:80 -n ingressname
+
+
+#AKS deployment using-Terraform
+github.com/labdemo223/AKS-Terraform
+
+#Azurerm kubernetes-to get resources templates
+#Azurerm <type required resource name> kubernetes
+
+#Template code link
+*https://github.com/nextopsvideos/terraformyt
+
+#Terraform files
+
+*main.tf         (it contains resources to be provision)
+*variables.tf    (it contains variable names)
+*terrafor.tfvars (it contains variable values)
+
+#Syntax to give variables
+
+"$(var.<variablename>)"
+
+
+
+
+
+
+
+
+
+
+
+
+
